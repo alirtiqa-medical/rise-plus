@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
+<title>التقييم الطبي | مركز الارتقاء</title>
+<!-- نربط الاستبيان بنفس ملف الستايل الخاص بك ليأخذ نفس الألوان والهوية -->
+<link href="style.css" rel="stylesheet"/>
+<style>
+  body { min-height: 100vh; display: flex; flex-direction: column; background-color: var(--bg); }
+  .quiz-header { text-align: center; padding: 40px 20px 20px; }
+  .quiz-badge { display: inline-block; background: linear-gradient(90deg,#176B5B,#00866A); color: #fff; padding: 6px 16px; border-radius: 999px; font-size: 13px; font-weight: 800; margin-bottom: 12px; box-shadow: 0 8px 18px rgba(0,134,106,.18); }
+  .quiz-clinic-name { font-size: 26px; font-weight: 900; color: var(--heading); margin: 0; }
+  
+  .quiz-container { max-width: 520px; margin: 0 auto; padding: 30px 24px; background: var(--surface); border-radius: 24px; box-shadow: var(--shadowSoft); border: 1px solid rgba(23,107,91,.10); text-align: center; width: 92%; }
+  .quiz-step { display: none; animation: fadeIn 0.4s ease; }
+  .quiz-step.active { display: block; }
+  .quiz-title { font-size: 20px; font-weight: 900; color: var(--heading); margin-bottom: 24px; line-height: 1.5; }
+  
+  .quiz-btn { display: block; width: 100%; padding: 16px; margin-bottom: 14px; border-radius: 14px; border: 1px solid rgba(23,107,91,.16); background: var(--surface-2); color: var(--text); font-size: 16px; font-weight: 800; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 4px 12px rgba(17,77,64,.03); -webkit-appearance: none; font-family: inherit; }
+  .quiz-btn:hover, .quiz-btn:active { background: linear-gradient(180deg,#176B5B,#00866A); color: #fff; border-color: transparent; transform: translateY(-2px); box-shadow: 0 10px 24px rgba(0,134,106,.18); }
+  
+  .quiz-progress { display: flex; justify-content: center; gap: 8px; margin-bottom: 24px; }
+  .progress-dot { width: 10px; height: 10px; border-radius: 50%; background: #c0cfc9; transition: all 0.3s ease; }
+  .progress-dot.active { background: var(--accent-dark); transform: scale(1.3); }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+</style>
+</head>
+<body class="is-loading">
+
+<header class="quiz-header">
+  <div class="quiz-badge" id="headerBadge">✔️ تقييم طبي معتمد</div>
+  <h1 class="quiz-clinic-name" id="headerTitle">مركز الارتقاء الطبي</h1>
+</header>
+
+<main class="quiz-container">
+  
+  <!-- السؤال الأول: التحدي الرئيسي -->
+  <div class="quiz-step active" id="step1">
+    <div class="quiz-progress"><div class="progress-dot active"></div><div class="progress-dot"></div><div class="progress-dot"></div><div class="progress-dot"></div></div>
+    <h2 class="quiz-title" id="q1_title">ما هي المشكلة الأساسية التي ترغب في علاجها بشكل جذري؟</h2>
+    <button class="quiz-btn" onclick="nextStep(1)" id="q1_a1">ضعف الانتصاب والارتخاء المفاجئ</button>
+    <button class="quiz-btn" onclick="nextStep(1)" id="q1_a2">سرعة القذف وفقدان السيطرة على الوقت</button>
+    <button class="quiz-btn" onclick="nextStep(1)" id="q1_a3">أعاني من المشكلتين معاً</button>
+  </div>
+
+  <!-- السؤال الثاني: الانتصاب الصباحي -->
+  <div class="quiz-step" id="step2">
+    <div class="quiz-progress"><div class="progress-dot"></div><div class="progress-dot active"></div><div class="progress-dot"></div><div class="progress-dot"></div></div>
+    <h2 class="quiz-title" id="q2_title">هل تلاحظ وجود "انتصاب صباحي" عند الاستيقاظ من النوم؟</h2>
+    <button class="quiz-btn" onclick="nextStep(2)" id="q2_a1">نعم، بشكل يومي تقريباً</button>
+    <button class="quiz-btn" onclick="nextStep(2)" id="q2_a2">نعم، ولكن على فترات متباعدة</button>
+    <button class="quiz-btn" onclick="nextStep(2)" id="q2_a3">لا، معدوم تماماً أو نادر جداً</button>
+  </div>
+
+  <!-- السؤال الثالث: التجارب السابقة -->
+  <div class="quiz-step" id="step3">
+    <div class="quiz-progress"><div class="progress-dot"></div><div class="progress-dot"></div><div class="progress-dot active"></div><div class="progress-dot"></div></div>
+    <h2 class="quiz-title" id="q3_title">هل استخدمت حبوباً كيميائية (مثل الفياجرا) وسببت لك صداعاً أو خفقاناً؟</h2>
+    <button class="quiz-btn" onclick="nextStep(3)" id="q3_a1">نعم، وأبحث الآن عن بديل آمن</button>
+    <button class="quiz-btn" onclick="nextStep(3)" id="q3_a2">لا، هذه أول مرة أبحث عن علاج</button>
+  </div>
+
+  <!-- السؤال الرابع: الأمراض المزمنة -->
+  <div class="quiz-step" id="step4">
+    <div class="quiz-progress"><div class="progress-dot"></div><div class="progress-dot"></div><div class="progress-dot"></div><div class="progress-dot active"></div></div>
+    <h2 class="quiz-title" id="q4_title">هل تعاني من أي أمراض مزمنة؟ (علاجاتنا موضعية وآمنة، لكن هذا للتشخيص الدقيق)</h2>
+    <button class="quiz-btn" onclick="finishQuiz()" id="q4_a1">لا، الحمد لله</button>
+    <button class="quiz-btn" onclick="finishQuiz()" id="q4_a2">نعم، السكري أو ضغط الدم أو أمراض القلب</button>
+  </div>
+
+</main>
+
+<!-- شريط التحميل (نفس التصميم الموجود في ستايل موقعك) -->
+<div class="site-loader" id="quizLoader" style="opacity: 0; visibility: hidden; pointer-events: none; transition: opacity .48s ease, visibility .48s ease;">
+  <div class="site-loader__inner">
+    <div class="site-loader__mark">
+      <div class="site-loader__cross"></div>
+    </div>
+    <h2 class="site-loader__title" id="loaderTitle">جارٍ تقييم حالتك...</h2>
+    <div class="site-loader__subtitle" id="loaderSub">نقوم بمطابقة إجاباتك مع البروتوكول الطبي الأنسب لك</div>
+    <div class="site-loader__bar"><span></span></div>
+  </div>
+</div>
+
+<script>
+  // نزيل كلاس التحميل عند فتح الصفحة لنظهر الاستبيان
+  document.body.classList.remove('is-loading');
+
+  const quizDict = {
+    headerBadge: { ar: "✔️ تقييم طبي معتمد", en: "✔️ Certified Medical Assessment", he: "✔️ הערכה רפואית מוסמכת" },
+    headerTitle: { ar: "مركز الارتقاء الطبي", en: "Medical Elevation Center", he: "מרכז העלייה הרפואי" },
+    
+    q1_title: { ar: "ما هي المشكلة الأساسية التي ترغب في علاجها بشكل جذري؟", en: "What is the main problem you want to treat radically?", he: "מהי הבעיה העיקרית שברצונך לטפל בה באופן יסודי?" },
+    q1_a1: { ar: "ضعف الانتصاب والارتخاء المفاجئ", en: "Erectile dysfunction and sudden flaccidity", he: "אין אונות וחוסר זקפה פתאומי" },
+    q1_a2: { ar: "سرعة القذف وفقدان السيطرة على الوقت", en: "Premature ejaculation and loss of control over time", he: "שפיכה מוקדמת ואובדן שליטה על הזמן" },
+    q1_a3: { ar: "أعاني من المشكلتين معاً", en: "I suffer from both problems", he: "אני סובל משתי הבעיות גם יחד" },
+    
+    q2_title: { ar: "هل تلاحظ وجود \"انتصاب صباحي\" عند الاستيقاظ من النوم؟", en: "Do you notice 'morning erections' upon waking up?", he: "האם אתה מבחין ב'זקפת בוקר' עם היקיצה?" },
+    q2_a1: { ar: "نعم، بشكل يومي تقريباً", en: "Yes, almost daily", he: "כן, כמעט כל יום" },
+    q2_a2: { ar: "نعم، ولكن على فترات متباعدة", en: "Yes, but intermittently", he: "כן, אבל לעתים רחוקות" },
+    q2_a3: { ar: "لا، معدوم تماماً أو نادر جداً", en: "No, non-existent or very rare", he: "לא, לא קיים או נדיר מאוד" },
+
+    q3_title: { ar: "هل استخدمت حبوباً كيميائية وسببت لك صداعاً أو خفقاناً؟", en: "Have you used chemical pills that caused headaches or palpitations?", he: "האם השתמשת בכדורים כימיים שגרמו לכאבי ראש או דפיקות לב?" },
+    q3_a1: { ar: "نعم، وأبحث الآن عن بديل آمن", en: "Yes, and I am now looking for a safe alternative", he: "כן, ואני מחפש כעת חלופה בטוחה" },
+    q3_a2: { ar: "لا، هذه أول مرة أبحث عن علاج", en: "No, this is my first time looking for a treatment", he: "לא, זו הפעם הראשונה שאני מחפש טיפול" },
+    
+    q4_title: { ar: "هل تعاني من أي أمراض مزمنة؟", en: "Do you suffer from any chronic diseases?", he: "האם אתה סובל ממחלות כרוניות כלשהן?" },
+    q4_a1: { ar: "لا، الحمد لله", en: "No, thankfully", he: "לא, תודה לאל" },
+    q4_a2: { ar: "نعم، السكري أو ضغط الدم أو أمراض القلب", en: "Yes, Diabetes, Blood Pressure, or Heart Disease", he: "כן, סוכרת, לחץ דם או מחלות לב" },
+    
+    loaderTitle: { ar: "جارٍ تقييم حالتك...", en: "Assessing your case...", he: "מעריך את המצב שלך..." },
+    loaderSub: { ar: "نقوم بمطابقة إجاباتك مع البروتوكول الطبي الأنسب لك", en: "Matching your answers with the most suitable medical protocol", he: "מתאים את התשובות שלך לפרוטוקול הרפואי המתאים ביותר" }
+  };
+
+  function applyLanguage() {
+    const navLang = navigator.language || navigator.userLanguage || "en";
+    let lang = "en";
+    if (navLang.toLowerCase().startsWith("ar")) lang = "ar";
+    if (navLang.toLowerCase().startsWith("he")) lang = "he";
+    
+    document.documentElement.lang = lang;
+    document.documentElement.dir = (lang === "ar" || lang === "he") ? "rtl" : "ltr";
+    
+    Object.keys(quizDict).forEach(key => {
+      const el = document.getElementById(key);
+      if (el) el.textContent = quizDict[key][lang];
+    });
+  }
+
+  applyLanguage();
+
+  function nextStep(currentStep) {
+    document.getElementById('step' + currentStep).classList.remove('active');
+    document.getElementById('step' + (currentStep + 1)).classList.add('active');
+  }
+
+  function finishQuiz() {
+    document.getElementById('step4').classList.remove('active');
+    document.querySelector('.quiz-container').style.display = 'none';
+    
+    const loader = document.getElementById('quizLoader');
+    document.body.classList.add('is-loading');
+    loader.style.opacity = '1';
+    loader.style.visibility = 'visible';
+    loader.style.pointerEvents = 'auto';
+    
+    // التحويل إلى صفحة العروض بعد 3 ثوانٍ
+    setTimeout(() => {
+      window.location.replace('offer.html');
+    }, 3000);
+  }
+</script>
+</body>
+</html>
